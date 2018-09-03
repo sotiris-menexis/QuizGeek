@@ -3,6 +3,8 @@ package com.example.sotosmen.quizgeek;
 import java.util.ArrayList;
 
 public class Question {
+    //This is the Object that contains all the different fields that exist in the JSON file.
+    //This class also contains getters and setters for all the variables.
     private String question;
     private String difficulty;
     private String category;

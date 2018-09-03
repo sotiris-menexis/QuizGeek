@@ -41,30 +41,35 @@ public class StartScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
-
+        //Setting up the layout of the start screen.
         final Animation new_cont_Anim = AnimationUtils.loadAnimation(this,R.anim.new_cont);
         options_B = (Button) findViewById(R.id.options_B);
         continue_B = (Button) findViewById(R.id.continue_B);
         new_B = (Button) findViewById(R.id.new_B);
         loading = (ProgressBar) findViewById(R.id.loading_S);
+        //Making the progressBar invisible in the View.
         loading.setVisibility(View.INVISIBLE);
         //Initializing the Database.
         db = new DatabaseHelper(getApplicationContext());
-
+        //Running the async task to check if continue is available in the database.
         new Start().execute();
         //A recommendation for the User to check his/her preferences.
         if(startCheck) {
             Toast.makeText(getApplicationContext(), "Please enter your preferences in the options.", Toast.LENGTH_LONG).show();
         }
+        //Setting the startcheck to false so that the Toast shows up only once in the startup of the App.
         startCheck=false;
-        //Starting the options activity.
+        //Creating a options Button click listener.
+        //If the button is pressed it starts the options activity.
         options_B.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(StartScreen.this, Options.class));
             }
         });
+        //Creating the new game button click listener.
         //If there is internet connection then it starts the Question Activity.
+        //Else it prints a connection Toast message.
         new_B.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +81,9 @@ public class StartScreen extends Activity {
                 }
             }
         });
-        //If
+        //Creating the continue button click listener.
+        //If there is internet connection and the Continue button is enabled it starts the Question Activity.
+        //Else it prints a connection Toast message.
         continue_B.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,12 +102,18 @@ public class StartScreen extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            //Setting only the Loading progressBar to be visible in the View.
             new_B.setVisibility(View.INVISIBLE);
             continue_B.setVisibility(View.INVISIBLE);
             loading.setVisibility(View.VISIBLE);
         }
         //Creating a connection to the server and the passing the contents of the JSON file to the question Arraylist
         //As question objects.
+        //If there are questions that have already been answered and are in the database those questions get deleted.
+        //If the Questions are less than the Question number needed then the connection runs again until there are
+        //enough questions. If the connection runs 60 times then the Questions table in the Database is deleted.
+        //If the integer passed by the button listener is 1 which correlates that the button pressed is the continue
+        //then the question stored in the continue is pushed in the first question of the questions list.
         @Override
         protected Void doInBackground(Integer... ints) {
             StringBuffer str = new StringBuffer();
@@ -187,6 +200,7 @@ public class StartScreen extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            //Setting the Loading progressBar to be invisible and starting the Questions Activity.
             loading.setVisibility(View.INVISIBLE);
             startActivity(new Intent(StartScreen.this, Questions_Act.class));
         }
@@ -198,6 +212,7 @@ public class StartScreen extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            //Setting the Loading progressBar to be visible in the View.
             new_B.setVisibility(View.INVISIBLE);
             continue_B.setVisibility(View.INVISIBLE);
             loading.setVisibility(View.VISIBLE);
@@ -206,8 +221,10 @@ public class StartScreen extends Activity {
         @Override
         protected Boolean doInBackground(Void... voids) {
             boolean flag;
+            //Gets the number of rows existing in the Continue table of the database.
             int NoOfRows = (int) DatabaseUtils.longForQuery(db.getWritableDatabase(),"SELECT COUNT(*) FROM CONTINUE",null);
-            //Checking if Continue table is empty.
+            //If the table is empty then the in NoOfRows is empty so the flag gets to be false.
+            //If there is a continue entry in the Continue table then the flag is true.
             if (NoOfRows == 0){
                 flag=false;
             }else {
@@ -224,6 +241,7 @@ public class StartScreen extends Activity {
             new_B.setVisibility(View.VISIBLE);
             continue_B.setVisibility(View.VISIBLE);
             loading.setVisibility(View.INVISIBLE);
+            //If the Continue is doesn't exist then the button remains disabled.
             if(!aBoolean){
                 continue_B.setEnabled(false);
             }

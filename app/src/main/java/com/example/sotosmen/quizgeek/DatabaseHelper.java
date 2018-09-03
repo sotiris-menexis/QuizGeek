@@ -25,7 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db =  this.getWritableDatabase();
         Log.d("Tag", "Database created");
     }
-
+    //Here the two tables are created. One for the Questions that are answered and one for the continue question.
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE QUESTIONS (ID INTEGER PRIMARY KEY AUTOINCREMENT, QUESTION TEXT, DIFFICULTY TEXT," +

@@ -18,7 +18,12 @@ public class Options extends AppCompatActivity {
     protected EditText userQNum;
     protected Button saveB;
     protected ProgressBar loading_O;
-
+    //This class is used to change the number of questions that the user wants to answer.
+    //If the number entered in the number field is not a number then a Toast appears to ask the user
+    //to enter a valid number
+    //If a number is entered then the number of questions to be answered is changed.
+    //Also if the user doesn't enter anything then the StartScreen activity is launched and nothing is
+    //changed.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +53,7 @@ public class Options extends AppCompatActivity {
         });
 
     }
-
+    //The method used to determine if the input is a number.
     public static boolean isInteger(String s) {
         try {
             Integer.parseInt(s);

@@ -34,7 +34,7 @@ public class Questions_Act extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions);
-
+        //Initializing all widgets used in the activity.
         final Animation true_false_Anim = AnimationUtils.loadAnimation(this,R.anim.true_false);
 
         trueB = (Button) findViewById(R.id.true_B);
@@ -43,11 +43,11 @@ public class Questions_Act extends AppCompatActivity {
         loading = (ProgressBar) findViewById(R.id.loading_Q);
         questStr = (TextView) findViewById(R.id.questStr);
         scoreTxt = (TextView) findViewById(R.id.scoreStr);
-
+        //If the number of the questions to be answered hasn't been changed by the user the default number is used which is 10.
         if(num_remaining == -20){
             num_remaining = num_remaining_def;
         }
-
+        //Setting all the widgets to be invisible since everything is set to visible dynamicly by the QuestionInit asyncTask.
         scoreTxt.setVisibility(View.INVISIBLE);
         questStr.setVisibility(View.INVISIBLE);
         loading.setVisibility(View.INVISIBLE);
@@ -55,7 +55,7 @@ public class Questions_Act extends AppCompatActivity {
         trueB.setVisibility(View.INVISIBLE);
         falseB.setVisibility(View.INVISIBLE);
         db = new DatabaseHelper(this);
-
+        //Executing the Initialization asyncTask.
         new QuestionInit().execute();
 
         trueB.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +83,12 @@ public class Questions_Act extends AppCompatActivity {
             }
         });
     }
-
+    //The asyncTask QuestionInit sets the text of the Question textView to be the first question from the
+    //questions list and then inserts the question to the database.
+    //After that it removes that question from the questions list.
+    //Before anything happens on the background the asyncTask sets the loading progressBar to be visible
+    //and when the whole calculation finishes sets all the widgets to be visible and the loading progressBar
+    //to be invisible.
     private class QuestionInit extends AsyncTask<Void,Void,Void> {
 
         @Override
@@ -140,7 +145,11 @@ public class Questions_Act extends AppCompatActivity {
         }
         question.setText(StartScreen.questions.get(0).getQuestion());
     }
-
+    //If during the answering of the questions the activity stops gets destroyed
+    //or put in the background the question that was being displayed is saved in the
+    //continue table.
+    //If then the Activity gets put in the foreground again then the continue entries
+    //in the continue table get deleted.
     @Override
     protected void onStop() {
         super.onStop();

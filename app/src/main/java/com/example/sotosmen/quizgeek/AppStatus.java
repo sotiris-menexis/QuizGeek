@@ -1,9 +1,4 @@
 package com.example.sotosmen.quizgeek;
-
-/**
- * Created by juma on 18/04/17.
- */
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -12,17 +7,14 @@ import android.util.Log;
 public class AppStatus {
 
     static Context context;
-    /**
-     * We use this class to determine if the application has been connected to either WIFI Or Mobile
-     * Network, before we make any network request to the server.
-     * <p>
-     * The class uses two permission - INTERNET and ACCESS NETWORK STATE, to determine the user's
-     * connection stats
-     */
+     //The use of this class is to determine if the application has been connected to either WIFI Or Mobile
+     //Network, before any network request to the server is made.
+     //The class uses two permissions - INTERNET and ACCESS NETWORK STATE, to determine the user's
+     //connection stats
+
 
     private static AppStatus instance = new AppStatus();
     ConnectivityManager connectivityManager;
-    NetworkInfo wifiInfo, mobileInfo;
     boolean connected = false;
 
     public static AppStatus getInstance(Context ctx) {
