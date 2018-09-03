@@ -25,7 +25,7 @@ public class Result_Screen extends AppCompatActivity {
 
         finalScore = (TextView) findViewById(R.id.finalScore);
         menu_B = (Button) findViewById(R.id.menu_B);
-        finalScore.setText("    Final\nScore: " + scoreNum);
+        finalScore.setText("     Final\nScore: " + scoreNum);
         All_Tasks.score = 0;
         menu_B.setOnClickListener(new View.OnClickListener() {
             @Override
